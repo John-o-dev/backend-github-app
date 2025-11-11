@@ -1,5 +1,5 @@
 const express = require('express');
-const nodeFetch  = require('node-fetch');
+const nodeFetch = require('node-fetch');
 const dotenv = require('dotenv');
 const cors = require('cors');
 
@@ -10,17 +10,16 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 
+app.get('/', (req, res) => {
+  res.send('API está funcionando!');
+});
+
 app.get('/api/github', async (_req, res) => {
   try {
-    const response = await nodeFetch('https://api.github.com/users/John-o-dev', {
-      headers: {
-        Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-        Accept: 'application/vnd.github.v3+json',
-      },
-    });
+    const response = await fetch(`https://api.github.com/users/John-o-dev`);
 
     if (!response.ok) {
-      console.log('RESPOSTA: ', response)
+      console.log("Erro ao buscar usuário do GitHub:", response);
       return res.status(response.status).json({ error: 'Erro ao buscar repositórios' });
     }
 
